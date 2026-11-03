@@ -1,7 +1,0 @@
-{
-  "task_id": "task-unified-auth-remaining",
-  "task_description": "Complete the remaining unified-auth implementation: Cognito groups for Pool A, backend role utilities and admin endpoints, admin dashboard user management UI",
-  "status": "completed",
-  "feature_order": ["FEAT-001", "FEAT-002", "FEAT-003"],
-  "blocked_reason": null
-}
