@@ -42,9 +42,10 @@ Moovv (moovv.fit) — AI-driven healthtech platform for digital MSK and mobility
 - Auto-deploys in ~30s
 - Cache invalidation automatic
 
-## 🔧 Shared Skills (via .agents/shared/)
+## 🔧 Shared Skills (via .agents/shared/skills/)
 Activate with: `#[[file:.agents/shared/skills/{name}/SKILL.md]]`
-- `moovv-design-system` — Brand colors, typography, components
+- `moovv-fit-design-system` — Brand colors, typography, components
+- `moovv-fit-product` — Product context and domain knowledge
 
 ## 📎 Context
 - `#[[file:.agents/steering/system-rules.md]]` — Constraints
@@ -53,3 +54,8 @@ Activate with: `#[[file:.agents/shared/skills/{name}/SKILL.md]]`
 - `#[[file:.agents/steering/operational-context.md]]` — Commands
 
 **Session End:** Ask "Commit? (y/n)" → concise msg → `git add` specific files
+
+## 🔗 References
+- `#[[file:docs/architecture/adr/README.md]]` — Architecture Decision Records (ADRs)
+- `#[[file:/mnt/workspace/src/moovv-fit/repos/docs/product/docs/product/manifest.md]]` — Upstream product decisions (PDRs) & clinical invariants
+- `#[[file:/mnt/workspace/src/moovv-fit/docs/architecture/adr/ADR-001-SUBMODULE-ARCHITECTURE.md]]` — Platform submodule architecture
