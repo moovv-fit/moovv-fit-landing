@@ -2695,7 +2695,7 @@ a {
   font-family: var(--font-body);
 }
 
-/* App store badges */
+/* App store badges & CTAs */
 .store-badges {
   display: flex;
   align-items: center;
@@ -2704,9 +2704,12 @@ a {
 }
 
 .store-badge {
-  display: block;
+  display: inline-flex;
+  align-items: center;
   border-radius: 8px;
+  height: 48px;
   transition: transform 0.2s ease;
+  flex-shrink: 0;
 }
 
 .store-badge:hover {
@@ -2731,37 +2734,15 @@ a {
   margin: -11.5px;
 }
 
-.store-badge--apple {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.badge-status-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 6px;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
-  color: #FBBF24;
-  background: rgba(251, 191, 36, 0.12);
-  border: 1px solid rgba(251, 191, 36, 0.35);
-  border-radius: 12px;
-  padding: 2px 8px;
-  white-space: nowrap;
-}
-
 .btn-pwa-cta {
   font-family: var(--font-heading);
   font-size: 15px;
   font-weight: 500;
   color: var(--white-100);
-  background: linear-gradient(135deg, rgba(64, 105, 255, 0.35) 0%, rgba(107, 138, 255, 0.6) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(64, 105, 255, 0.4) 0%, rgba(107, 138, 255, 0.7) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 50px;
-  padding: 12px 24px;
+  padding: 0 24px;
   height: 48px;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -2772,10 +2753,11 @@ a {
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(64, 105, 255, 0.25);
   box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 .btn-pwa-cta:hover {
-  background: linear-gradient(135deg, rgba(64, 105, 255, 0.55) 0%, rgba(107, 138, 255, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(64, 105, 255, 0.6) 0%, rgba(107, 138, 255, 0.85) 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(64, 105, 255, 0.4);
   color: var(--white-100);
@@ -2789,23 +2771,11 @@ a {
   transform: translateX(3px);
 }
 
-.btn-pwa-cta--lg {
-  font-size: 16px;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, rgba(64, 105, 255, 0.85) 0%, rgba(40, 75, 210, 0.95) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.btn-pwa-cta--lg:hover {
-  background: linear-gradient(135deg, rgba(75, 120, 255, 1) 0%, rgba(50, 90, 230, 1) 100%);
-}
-
 .cta-subtext {
   font-family: var(--font-body);
   font-size: 13px;
   color: var(--white-60);
-  margin-top: -32px;
-  margin-bottom: 24px;
+  margin-top: 16px;
 }
 
 /* Persona Section */

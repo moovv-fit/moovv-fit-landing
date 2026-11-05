@@ -1,5 +1,5 @@
 // =============================================
-// App store & PWA links
+// App store & Web links
 // Loaded on every page, before main.js, so the nav link's href is already a
 // destination URL by the time main.js binds smooth-scroll to a[href^="#"].
 // =============================================
@@ -16,14 +16,14 @@
   const isIOS = /iPhone|iPad|iPod/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
   const isAndroid = /Android/.test(ua);
 
-  // When Apple review is pending, iOS users open the PWA directly in Safari
+  // When Apple review is pending, iOS users open the Web App directly in Safari
   const iosTargetUrl = APPLE_REVIEW_PENDING ? PWA_URL : APP_STORE_URL;
 
-  // On phones, "download the app" goes straight to the store or PWA
+  // On phones, "download the app" goes straight to the store or web app
   if (isIOS || isAndroid) {
     document.querySelectorAll('[data-download-link]').forEach(link => {
       link.href = isIOS ? iosTargetUrl : GOOGLE_PLAY_URL;
-      link.dataset.store = isIOS ? (APPLE_REVIEW_PENDING ? 'pwa_safari' : 'app_store') : 'google_play';
+      link.dataset.store = isIOS ? (APPLE_REVIEW_PENDING ? 'web_safari' : 'app_store') : 'google_play';
       if (isIOS && APPLE_REVIEW_PENDING) {
         link.setAttribute('target', '_blank');
         link.setAttribute('rel', 'noopener noreferrer');
@@ -31,13 +31,12 @@
     });
   }
 
-  // Update App Store badges to point to PWA in Safari while in review
+  // Route App Store badge to web app while review is pending
   if (APPLE_REVIEW_PENDING) {
     document.querySelectorAll('[data-store="app_store"]').forEach(link => {
       link.href = PWA_URL;
       link.setAttribute('target', '_blank');
       link.setAttribute('rel', 'noopener noreferrer');
-      link.setAttribute('title', 'iOS update in review — opens web app in Safari');
     });
   }
 
