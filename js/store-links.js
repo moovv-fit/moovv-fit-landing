@@ -4,9 +4,11 @@
 // destination URL by the time main.js binds smooth-scroll to a[href^="#"].
 // =============================================
 (function () {
+  const isStaging = window.location.hostname.includes('staging') || window.location.hostname.includes('localhost');
+  const APP_BASE = isStaging ? 'https://app-staging.moovv.fit' : 'https://app.moovv.fit';
   const APP_STORE_URL = 'https://apps.apple.com/in/app/moovvfit/id6793878794';
   const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=fit.moovv.app';
-  const PWA_URL = 'https://app.moovv.fit';
+  const PWA_URL = APP_BASE;
 
   // Toggle flag: true while new bundle ID is under Apple App Store review
   const APPLE_REVIEW_PENDING = true;
@@ -39,6 +41,14 @@
       link.setAttribute('rel', 'noopener noreferrer');
     });
   }
+
+  // Ensure Web App and portal links use the environment-aware target
+  document.querySelectorAll('[data-store="web_app"]').forEach(link => {
+    link.href = PWA_URL;
+  });
+  document.querySelectorAll('a[data-portal-link]').forEach(link => {
+    link.href = `${APP_BASE}/${link.dataset.portalLink}`;
+  });
 
   document.addEventListener('click', e => {
     const link = e.target.closest('[data-store]');

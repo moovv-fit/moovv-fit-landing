@@ -92,3 +92,12 @@ if (onboardForm) {
     }
   });
 }
+
+// Environment-aware portal login resolution
+(function () {
+  const isStaging = window.location.hostname.includes('staging') || window.location.hostname.includes('localhost');
+  const appBase = isStaging ? 'https://app-staging.moovv.fit' : 'https://app.moovv.fit';
+  document.querySelectorAll('a[data-portal-link]').forEach((link) => {
+    link.href = `${appBase}/${link.dataset.portalLink}`;
+  });
+})();
