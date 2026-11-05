@@ -114,7 +114,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "- **S3**: s3://moovv-fit-content-staging/web/landing/" >> $GITHUB_STEP_SUMMARY
           echo "- **CloudFront**: ${{ steps.cf.outputs.distribution_id }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **URL**: https://www.staging.moovv.fit" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://staging.moovv.fit" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
 
   deploy-production:

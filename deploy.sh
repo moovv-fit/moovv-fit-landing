@@ -4,7 +4,7 @@ set -euo pipefail
 # ==============================================================================
 # Moovv Fit Landing — Local Deployment Script
 # Usage:
-#   ./deploy.sh staging      # Deploys to https://www.staging.moovv.fit
+#   ./deploy.sh staging      # Deploys to https://staging.moovv.fit
 #   ./deploy.sh production   # Deploys to https://www.moovv.fit
 # ==============================================================================
 
@@ -16,7 +16,7 @@ case "$ENV" in
   staging)
     BUCKET="s3://moovv-fit-content-staging/web/landing"
     DIST_ID="E2U0JW2RPO2HFD"
-    URL="https://www.staging.moovv.fit"
+    URL="https://staging.moovv.fit"
     ;;
   production)
     BUCKET="s3://moovv-fit-content-production/web/landing"
