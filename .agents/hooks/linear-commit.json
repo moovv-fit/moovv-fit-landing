@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Linear Issue Reminder on Commit",
+      "trigger": "PreToolUse",
+      "description": "Remind agent to include Linear issue reference in commit messages",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "agent",
+        "prompt": "LINEAR COMMIT CHECK: If this is a git commit command, ensure the commit message or branch name includes a Linear issue reference (CORE-XXX). Check the repo's TODO.md or Linear board for relevant issues. If no issue applies, the commit can proceed without a reference."
+      }
+    }
+  ]
+}
