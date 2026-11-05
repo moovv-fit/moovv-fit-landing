@@ -136,3 +136,4 @@ When an in-home lead arrives, a structured card is dispatched immediately to `#c
 - [ ] **Pawan Deshmukh**: Approval of clinical concern categories and patient triage fallback to Telehealth.
 - [ ] **Rahul Jain**: Approval of pilot pincodes, ops SLA (2-hour window), and WhatsApp confirmation copy.
 - [ ] **Ujwal Parker**: Architecture review of serverless Lambda handler, KMS secrets, and webhook delivery reliability.
+

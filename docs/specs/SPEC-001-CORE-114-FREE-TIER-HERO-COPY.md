@@ -111,3 +111,4 @@ flowchart TD
 - [ ] **Pawan Deshmukh**: Approval of clinical disclaimer and absence of unverified curative claims.
 - [ ] **Rahul Jain**: Selection of preferred Hero Copy variation (Option A, B, or C).
 - [ ] **Ujwal Parker**: Verification of responsive mobile rendering and posthog tracking events (`cta_hero_free`, `cta_hero_review`).
+

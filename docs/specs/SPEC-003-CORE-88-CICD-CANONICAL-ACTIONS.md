@@ -92,3 +92,4 @@ aws s3 sync . "$BUCKET/" \
 - [ ] **Ujwal Parker**: Validation that `actions/checkout@v7` and `aws-actions/configure-aws-credentials@v6` pass in the `moovv-fit` org OIDC environment.
 - [ ] **Pawan Deshmukh**: Confirmation of production rollback procedure using the `tag_or_ref` parameter.
 - [ ] **Rahul Jain**: Operational sign-off on zero-downtime deployment guarantees.
+
