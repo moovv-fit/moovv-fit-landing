@@ -76,6 +76,7 @@ jobs:
         run: |
           # Sync all assets with long cache
           aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+            --no-follow-symlinks \
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
@@ -93,6 +94,7 @@ jobs:
 
           # HTML files with shorter cache (5 min)
           aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+            --no-follow-symlinks \
             --exclude "*" \
             --include "*.html" \
             --include "for-physios/*.html" \
@@ -142,6 +144,7 @@ jobs:
         run: |
           # Sync all assets with long cache
           aws s3 sync . s3://moovv-fit-content-production/web/landing/ \
+            --no-follow-symlinks \
             --delete \
             --exclude ".git/*" \
             --exclude ".github/*" \
@@ -159,6 +162,7 @@ jobs:
 
           # HTML files with shorter cache (5 min)
           aws s3 sync . s3://moovv-fit-content-production/web/landing/ \
+            --no-follow-symlinks \
             --exclude "*" \
             --include "*.html" \
             --include "for-physios/*.html" \
