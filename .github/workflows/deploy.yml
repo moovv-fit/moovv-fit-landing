@@ -12,22 +12,33 @@ on:
       - 'fonts/**'
       - 'videos/**'
       - 'for-physios/**'
+      - 'for-clinics/**'
       - '!*.md'
 
-  workflow_call:
-    inputs:
-      environment:
-        description: 'Target environment'
-        required: false
-        type: string
-        default: production
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - 'images/**'
+      - 'fonts/**'
+      - 'videos/**'
+      - 'for-physios/**'
+      - 'for-clinics/**'
+      - '!*.md'
 
   workflow_dispatch:
     inputs:
-      confirmation:
-        description: 'Type "DEPLOY" to confirm'
+      environment:
+        description: 'Target environment'
         required: true
-        type: string
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
 
 concurrency:
   group: deploy-landing-${{ github.ref }}
@@ -38,22 +49,75 @@ permissions:
   id-token: write
 
 jobs:
-  validate:
-    name: Validate
-    if: github.event_name == 'workflow_dispatch'
+  deploy-staging:
+    name: Deploy to Staging
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
     runs-on: ubuntu-latest
+    environment: staging
     steps:
-      - name: Validate confirmation
-        run: |
-          if [ "${{ github.event.inputs.confirmation }}" != "DEPLOY" ]; then
-            echo "❌ Deployment requires confirmation 'DEPLOY'"
-            exit 1
-          fi
+      - uses: actions/checkout@v4
 
-  deploy:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::855246887543:role/moovv-fit-github-actions-release-role
+          aws-region: ap-south-1
+
+      - name: Get CloudFront Distribution ID
+        id: cf
+        run: |
+          DIST_ID=$(aws ssm get-parameter \
+            --name "/moovv-fit/staging/landing_cloudfront_distribution_id" \
+            --query "Parameter.Value" \
+            --output text)
+          echo "distribution_id=$DIST_ID" >> $GITHUB_OUTPUT
+
+      - name: Sync to S3
+        run: |
+          # Sync all assets with long cache
+          aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".agents/*" \
+            --exclude ".kiro/*" \
+            --exclude "*.md" \
+            --exclude ".gitignore" \
+            --exclude ".release-please-manifest.json" \
+            --exclude "release-please-config.json" \
+            --cache-control "public, max-age=31536000, immutable" \
+            --metadata-directive REPLACE || {
+              echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
+              aws s3 ls s3://moovv-fit-content-staging/web/landing/index.html && echo "index.html exists, continuing"
+            }
+
+          # HTML files with shorter cache (5 min)
+          aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+            --exclude "*" \
+            --include "*.html" \
+            --include "for-physios/*.html" \
+            --include "for-clinics/*.html" \
+            --cache-control "public, max-age=300" \
+            --metadata-directive REPLACE
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ steps.cf.outputs.distribution_id }} \
+            --paths "/*"
+
+      - name: Summary
+        run: |
+          echo "## ✅ Landing Deployed to Staging" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **S3**: s3://moovv-fit-content-staging/web/landing/" >> $GITHUB_STEP_SUMMARY
+          echo "- **CloudFront**: ${{ steps.cf.outputs.distribution_id }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **URL**: https://www.staging.moovv.fit" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+
+  deploy-production:
     name: Deploy to Production
-    needs: [validate]
-    if: always() && (needs.validate.result == 'success' || needs.validate.result == 'skipped')
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -76,7 +140,7 @@ jobs:
 
       - name: Sync to S3
         run: |
-          # Sync all assets with long cache (skip delete on warnings)
+          # Sync all assets with long cache
           aws s3 sync . s3://moovv-fit-content-production/web/landing/ \
             --delete \
             --exclude ".git/*" \
@@ -90,7 +154,6 @@ jobs:
             --cache-control "public, max-age=31536000, immutable" \
             --metadata-directive REPLACE || {
               echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
-              # If files were uploaded, consider it a success (delete failures are warnings)
               aws s3 ls s3://moovv-fit-content-production/web/landing/index.html && echo "index.html exists, continuing"
             }
 
