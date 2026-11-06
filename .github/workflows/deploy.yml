@@ -40,6 +40,14 @@ on:
           - production
         default: staging
 
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: false
+        type: string
+        default: production
+
 concurrency:
   group: deploy-landing-${{ github.ref }}
   cancel-in-progress: true
@@ -51,7 +59,7 @@ permissions:
 jobs:
   deploy-staging:
     name: Deploy to Staging
-    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging')
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || (github.event_name == 'workflow_call' && inputs.environment == 'staging')
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -119,7 +127,10 @@ jobs:
 
   deploy-production:
     name: Deploy to Production
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
+      (github.event_name == 'workflow_call' && (inputs.environment == 'production' || inputs.environment == ''))
     runs-on: ubuntu-latest
     environment: production
     steps:
