@@ -351,7 +351,7 @@ Add a `<p>` line below the tagline: **"Made in [city], for the world."** — or 
 
 Add to footer (new column or row):
 - **Contact:** `hello@moovv.fit`
-- **For physios:** link to physio.moovv.fit
+- **For physios:** link to app.moovv.fit/physio
 - **Press:** `press@moovv.fit` (if applicable)
 
 ---
