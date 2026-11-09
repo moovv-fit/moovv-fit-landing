@@ -10,6 +10,10 @@ permissions:
   pull-requests: write
   id-token: write
 
+env:
+  AWS_REGION: ap-south-1
+  AWS_ROLE_ARN: arn:aws:iam::855246887543:role/moovv-fit-github-actions-release-role
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
@@ -17,10 +21,41 @@ jobs:
       release_created: ${{ steps.release.outputs.release_created }}
       tag_name: ${{ steps.release.outputs.tag_name }}
     steps:
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Get GitHub App credentials from SSM
+        id: ssm
+        run: |
+          APP_ID=$(aws ssm get-parameter \
+            --name "/moovv-fit/github/release-bot-app-id" \
+            --query "Parameter.Value" \
+            --output text)
+          PRIVATE_KEY=$(aws ssm get-parameter \
+            --name "/moovv-fit/github/release-bot-private-key" \
+            --with-decryption \
+            --query "Parameter.Value" \
+            --output text)
+          echo "::add-mask::$PRIVATE_KEY"
+          echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
+          echo "RELEASE_APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
+          echo "$PRIVATE_KEY" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ steps.ssm.outputs.app_id }}
+          private-key: ${{ env.RELEASE_APP_PRIVATE_KEY }}
+
       - uses: googleapis/release-please-action@v4
         id: release
         with:
-          token: ${{ secrets.RELEASE_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
 
