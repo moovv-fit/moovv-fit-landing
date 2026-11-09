@@ -94,6 +94,11 @@ jobs:
             --exclude ".gitignore" \
             --exclude ".release-please-manifest.json" \
             --exclude "release-please-config.json" \
+            --exclude "*.toml" \
+            --exclude "*.sh" \
+            --exclude "tools/*" \
+            --exclude "docs/previews/*" \
+            --exclude "README*" \
             --cache-control "public, max-age=31536000, immutable" \
             --metadata-directive REPLACE || {
               echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
@@ -165,6 +170,11 @@ jobs:
             --exclude ".gitignore" \
             --exclude ".release-please-manifest.json" \
             --exclude "release-please-config.json" \
+            --exclude "*.toml" \
+            --exclude "*.sh" \
+            --exclude "tools/*" \
+            --exclude "docs/previews/*" \
+            --exclude "README*" \
             --cache-control "public, max-age=31536000, immutable" \
             --metadata-directive REPLACE || {
               echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
