@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Quality Guard (Spot)",
+      "trigger": "PostFileSave",
+      "description": "Static site quality for spot sessions",
+      "matcher": "\\.(html|css)$",
+      "action": {
+        "type": "agent",
+        "prompt": "SPOT QUALITY CHECK: 1. No inline styles (use CSS classes) 2. No !important (fix specificity) 3. All images have alt attrs 4. Semantic HTML (not div soup) 5. CSS variables for colors (--color-*) 6. rem for fonts (not px). Violations? List them. Pass? Say nothing."
+      }
+    }
+  ]
+}

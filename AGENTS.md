@@ -55,6 +55,17 @@ Activate with: `#[[file:.agents/shared/skills/{name}/SKILL.md]]`
 
 **Session End:** Ask "Commit? (y/n)" → concise msg → `git add` specific files
 
+## 🤖 Spot Execution Mode
+When running as **kiro-spot** (non-interactive, ephemeral):
+- Skip `.agents/sessions/` folders (ephemeral)
+- Executor handles git commit/push - focus on code only
+- Honor only `-spot.json` hooks:
+  - `quality-guard-spot.json` — HTML/CSS quality checks
+  - `git-safety-spot.json` — Destructive git prevention
+  - `codegen-focus-spot.json` — Session start context
+- No build step needed (static HTML/CSS)
+- Do NOT ask "Commit? (y/n)" - executor auto-commits
+
 ## 🔗 References
 - `#[[file:docs/architecture/adr/README.md]]` — Architecture Decision Records (ADRs)
 - `#[[file:/mnt/workspace/src/moovv-fit/repos/docs/product/docs/product/manifest.md]]` — Upstream product decisions (PDRs) & clinical invariants

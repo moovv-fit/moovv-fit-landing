@@ -1,0 +1,14 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Codegen Focus (Spot)",
+      "trigger": "SessionStart",
+      "description": "One-time context for spot sessions",
+      "action": {
+        "type": "agent",
+        "prompt": "SPOT MODE ACTIVE: Ephemeral session. Focus on task prompt. Skip session folders. Executor handles commit. Honor only -spot.json hooks."
+      }
+    }
+  ]
+}

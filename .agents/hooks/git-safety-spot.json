@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Git Safety (Spot)",
+      "trigger": "PreToolUse",
+      "description": "Prevent destructive git operations in spot sessions",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "agent",
+        "prompt": "SPOT GIT SAFETY: If this is a git command with --force, --hard, -D, or clean -fd, STOP. Spot should not run destructive git operations."
+      }
+    }
+  ]
+}
