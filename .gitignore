@@ -25,3 +25,4 @@ npm-debug.log
 # Kiro local symlinks (machine-specific paths)
 .agents/shared
 .agents/skills/
+publish/

@@ -80,45 +80,27 @@ jobs:
             --output text)
           echo "distribution_id=$DIST_ID" >> $GITHUB_OUTPUT
 
+      - name: Stage publish directory (allowlist)
+        run: scripts/stage-publish.sh publish
+      - name: Guard publish directory
+        run: scripts/guard-publish.sh publish
       - name: Sync to S3
         run: |
-          # Sync all assets with long cache
-          aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+          # Non-HTML assets: long immutable cache. HTML is excluded here so it is never immutable.
+          aws s3 sync publish/ s3://moovv-fit-content-staging/web/landing/ \
             --no-follow-symlinks \
             --delete \
-            --exclude ".git/*" \
-            --exclude ".github/*" \
-            --exclude ".agents/*" \
-            --exclude ".kiro/*" \
-            --exclude "*.md" \
-            --exclude ".gitignore" \
-            --exclude ".release-please-manifest.json" \
-            --exclude "release-please-config.json" \
-            --exclude "*.toml" \
-            --exclude "*.sh" \
-            --exclude "**/tools/*" \
-            --exclude "docs/previews/*" \
-            --exclude "**/README*" \
-            --exclude "*.txt" \
-            --exclude "*.py" \
+            --exclude "*.html" \
             --cache-control "public, max-age=31536000, immutable" \
-            --metadata-directive REPLACE || {
-              echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
-              aws s3 ls s3://moovv-fit-content-staging/web/landing/index.html && echo "index.html exists, continuing"
-            }
-
-          # HTML files with shorter cache (5 min)
-          # Exclude dev preview files from HTML sync
-          aws s3 sync . s3://moovv-fit-content-staging/web/landing/ \
+            --metadata-directive REPLACE
+          # HTML only: short cache (5 min)
+          aws s3 sync publish/ s3://moovv-fit-content-staging/web/landing/ \
             --no-follow-symlinks \
+            --delete \
             --exclude "*" \
             --include "*.html" \
-            --include "for-physios/*.html" \
-            --include "for-clinics/*.html" \
-            --exclude "docs/previews/*" \
             --cache-control "public, max-age=300" \
             --metadata-directive REPLACE
-
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
@@ -160,45 +142,27 @@ jobs:
             --output text)
           echo "distribution_id=$DIST_ID" >> $GITHUB_OUTPUT
 
+      - name: Stage publish directory (allowlist)
+        run: scripts/stage-publish.sh publish
+      - name: Guard publish directory
+        run: scripts/guard-publish.sh publish
       - name: Sync to S3
         run: |
-          # Sync all assets with long cache
-          aws s3 sync . s3://moovv-fit-content-production/web/landing/ \
+          # Non-HTML assets: long immutable cache. HTML is excluded here so it is never immutable.
+          aws s3 sync publish/ s3://moovv-fit-content-production/web/landing/ \
             --no-follow-symlinks \
             --delete \
-            --exclude ".git/*" \
-            --exclude ".github/*" \
-            --exclude ".agents/*" \
-            --exclude ".kiro/*" \
-            --exclude "*.md" \
-            --exclude ".gitignore" \
-            --exclude ".release-please-manifest.json" \
-            --exclude "release-please-config.json" \
-            --exclude "*.toml" \
-            --exclude "*.sh" \
-            --exclude "**/tools/*" \
-            --exclude "docs/previews/*" \
-            --exclude "**/README*" \
-            --exclude "*.txt" \
-            --exclude "*.py" \
+            --exclude "*.html" \
             --cache-control "public, max-age=31536000, immutable" \
-            --metadata-directive REPLACE || {
-              echo "::warning::S3 sync returned non-zero exit code, checking if uploads succeeded"
-              aws s3 ls s3://moovv-fit-content-production/web/landing/index.html && echo "index.html exists, continuing"
-            }
-
-          # HTML files with shorter cache (5 min)
-          # Exclude dev preview files from HTML sync
-          aws s3 sync . s3://moovv-fit-content-production/web/landing/ \
+            --metadata-directive REPLACE
+          # HTML only: short cache (5 min)
+          aws s3 sync publish/ s3://moovv-fit-content-production/web/landing/ \
             --no-follow-symlinks \
+            --delete \
             --exclude "*" \
             --include "*.html" \
-            --include "for-physios/*.html" \
-            --include "for-clinics/*.html" \
-            --exclude "docs/previews/*" \
             --cache-control "public, max-age=300" \
             --metadata-directive REPLACE
-
       - name: Invalidate CloudFront
         run: |
           aws cloudfront create-invalidation \
