@@ -13,6 +13,8 @@ on:
       - 'videos/**'
       - 'for-physios/**'
       - 'for-clinics/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
       - '!*.md'
 
   pull_request:
@@ -27,6 +29,8 @@ on:
       - 'videos/**'
       - 'for-physios/**'
       - 'for-clinics/**'
+      - 'scripts/**'
+      - '.github/workflows/deploy.yml'
       - '!*.md'
 
   workflow_dispatch:
