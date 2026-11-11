@@ -19,16 +19,17 @@ npx serve .
 
 ## 🚀 Deployment
 Push to `main` triggers GitHub Actions:
-1. Sync to S3 bucket
-2. CloudFront cache invalidation
-3. Live in ~30 seconds
+1. `scripts/stage-publish.sh` builds allowlisted `publish/`
+2. `scripts/guard-publish.sh` fails on dev/private files
+3. Sync `publish/` to S3 (assets immutable, HTML 5 min cache)
+4. CloudFront cache invalidation
+
+New top-level page/folder: add it to `ALLOW` in `scripts/stage-publish.sh`
+(see ADR-002). Never sync the repo root to a bucket.
 
 ```bash
-# Manual deploy (emergency only)
-aws s3 sync . s3://moovv-fit-landing \
-  --exclude ".git/*" \
-  --exclude "node_modules/*" \
-  --exclude ".agents/*"
+# Verify locally before pushing
+scripts/stage-publish.sh publish && scripts/guard-publish.sh publish
 ```
 
 ## 📋 Git Workflow

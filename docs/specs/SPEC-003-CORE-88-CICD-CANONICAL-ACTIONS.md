@@ -73,6 +73,10 @@ When provided, the checkout step dynamically checks out the specified tag:
 
 As resolved in previous sessions, `.agents/` and `.kiro/` directories contain symlinks (`.kiro/hooks -> ../.agents/hooks`). Without `--no-follow-symlinks`, the AWS CLI attempts recursive symlink traversal, throwing non-zero exit codes.
 
+> **Update (CORE-165):** the exclude-pattern example below is superseded. Syncs
+> now run from the allowlisted `publish/` directory (see ADR-002); the
+> `--no-follow-symlinks` invariant still applies.
+
 All `aws s3 sync` commands in `deploy.yml` will strictly preserve:
 ```bash
 aws s3 sync . "$BUCKET/" \
