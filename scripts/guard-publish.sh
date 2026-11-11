@@ -2,6 +2,7 @@
 # Fail if the publish dir contains dev/private files. Run before any S3 sync.
 # Usage: scripts/guard-publish.sh [publish-dir]   (default: publish)
 set -euo pipefail
+shopt -s nocasematch
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 OUT="${1:-publish}"
@@ -15,6 +16,7 @@ for f in **/*; do
   base="${f##*/}"
   if [[ "$base" == .* ]] \
      || [[ "$base" == README* ]] \
+     || [[ "$base" == "vite.svg" ]] \
      || [[ "$base" =~ \.(md|sh|py|toml|map|env|txt)$ ]] \
      || [[ "/$f" == */tools/* ]] || [[ "/$f" == */previews/* ]]; then
     echo "::error::dev/private file in publish dir: $f"

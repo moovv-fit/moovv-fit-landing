@@ -37,34 +37,31 @@ echo "   S3: $BUCKET"
 echo "   CloudFront: $DIST_ID"
 echo "   AWS Profile: $PROFILE"
 
-# 1. Sync assets with long immutable cache
-aws s3 sync . "$BUCKET/" \
+# 1. Stage allowlisted files into publish/ (mirrors deploy.yml)
+echo "📦 Staging publish directory..."
+scripts/stage-publish.sh publish
+
+# 2. Guard: fail if any dev/private files leaked
+echo "🛡️ Running publish guard..."
+scripts/guard-publish.sh publish
+
+# 3. Sync assets with long immutable cache (from publish/)
+aws s3 sync publish/ "$BUCKET/" \
   --profile "$PROFILE" \
   --region "$REGION" \
   --no-follow-symlinks \
   --delete \
-  --exclude ".git/*" \
-  --exclude ".github/*" \
-  --exclude ".agents/*" \
-  --exclude ".kiro/*" \
-  --exclude "*.md" \
-  --exclude ".gitignore" \
-  --exclude ".release-please-manifest.json" \
-  --exclude "release-please-config.json" \
-  --exclude ".linear.toml" \
-  --exclude "deploy.sh" \
+  --exclude "*.html" \
   --cache-control "public, max-age=31536000, immutable" \
   --metadata-directive REPLACE
 
-# 2. Sync HTML files with short cache (5 min)
-aws s3 sync . "$BUCKET/" \
+# 4. Sync HTML files with short cache (5 min)
+aws s3 sync publish/ "$BUCKET/" \
   --profile "$PROFILE" \
   --region "$REGION" \
   --no-follow-symlinks \
   --exclude "*" \
   --include "*.html" \
-  --include "for-physios/*.html" \
-  --include "for-clinics/*.html" \
   --cache-control "public, max-age=300" \
   --metadata-directive REPLACE
 
