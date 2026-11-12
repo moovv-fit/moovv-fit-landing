@@ -63,7 +63,8 @@ permissions:
 jobs:
   deploy-staging:
     name: Deploy to Staging
-    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || (github.event_name == 'workflow_call' && inputs.environment == 'staging')
+    # Auto-run only in moovv-fit; manual dispatch allowed in both orgs (ADR-005, CORE-212)
+    if: (github.event_name == 'workflow_dispatch' || github.repository_owner == 'moovv-fit') && (github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'staging') || (github.event_name == 'workflow_call' && inputs.environment == 'staging'))
     runs-on: ubuntu-latest
     environment: staging
     steps:
@@ -122,10 +123,14 @@ jobs:
 
   deploy-production:
     name: Deploy to Production
+    # Auto-run only in moovv-fit; manual dispatch allowed in both orgs (ADR-005, CORE-212)
     if: |
+      (github.event_name == 'workflow_dispatch' || github.repository_owner == 'moovv-fit') &&
+      (
       (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.environment == 'production') ||
       (github.event_name == 'workflow_call' && (inputs.environment == 'production' || inputs.environment == ''))
+      )
     runs-on: ubuntu-latest
     environment: production
     steps:
