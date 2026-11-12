@@ -22,7 +22,11 @@ npm-debug.log
 !.dev.vars.example
 !.env.example
 
-# Kiro local symlinks (machine-specific paths)
+# Agent session data (local only)
+.agents/sessions/*
+!.agents/sessions/.gitkeep
+.agents/tasks/*
+!.agents/tasks/.gitkeep
 .agents/shared
 .agents/skills/
 publish/
