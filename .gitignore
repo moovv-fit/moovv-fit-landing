@@ -30,3 +30,6 @@ npm-debug.log
 .agents/shared
 .agents/skills/
 publish/
+
+# Worktrees
+.worktrees/
