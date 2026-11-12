@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Git Safety Guard",
+      "trigger": "PreToolUse",
+      "description": "Prevents direct push to main and requires PR branch workflow",
+      "matcher": "execute_bash",
+      "action": {
+        "type": "command",
+        "command": "read INPUT; CMD=$(echo \"$INPUT\" | jq -r '.tool_input.command' 2>/dev/null); if echo \"$CMD\" | grep -qE '(git push|gh pr merge)'; then if echo \"$CMD\" | grep -qE 'gh pr merge.*--admin'; then echo '❌ Admin merge blocked. Wait for CI and proper review.' >&2; exit 2; fi; if echo \"$CMD\" | grep -qE 'git push.*(origin\\s+main|origin/main|HEAD:main)'; then echo '❌ Direct push to main blocked. Use a feature branch and open a PR.' >&2; exit 2; fi; fi"
+      }
+    }
+  ]
+}
