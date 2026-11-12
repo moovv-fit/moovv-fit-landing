@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+# Block direct pushes to main branch
+# Enforces PR workflow for all contributors
+
+PROTECTED_BRANCH="main"
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if [ "$remote_ref" = "refs/heads/$PROTECTED_BRANCH" ]; then
+    echo ""
+    echo "❌ Direct push to '$PROTECTED_BRANCH' is blocked."
+    echo ""
+    echo "Please create a Pull Request instead:"
+    echo "  1. git checkout -b feature/your-change"
+    echo "  2. git push -u origin feature/your-change"
+    echo "  3. gh pr create"
+    echo ""
+    echo "To bypass (emergency only): git push --no-verify"
+    exit 1
+  fi
+done
+
+exit 0
