@@ -16,6 +16,8 @@ env:
 
 jobs:
   release-please:
+    # Auto-run only in moovv-fit; manual dispatch allowed in both orgs (ADR-005, CORE-212)
+    if: github.event_name == 'workflow_dispatch' || github.repository_owner == 'moovv-fit'
     runs-on: ubuntu-latest
     outputs:
       release_created: ${{ steps.release.outputs.release_created }}
@@ -67,7 +69,8 @@ jobs:
   # Trigger production deploy when release is created
   deploy-production:
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
+    # Auto-run only in moovv-fit; manual dispatch allowed in both orgs (ADR-005, CORE-212)
+    if: (github.event_name == 'workflow_dispatch' || github.repository_owner == 'moovv-fit') && (needs.release-please.outputs.release_created == 'true')
     uses: ./.github/workflows/deploy.yml
     with:
       environment: production
