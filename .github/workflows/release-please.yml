@@ -39,18 +39,23 @@ jobs:
             --with-decryption \
             --query "Parameter.Value" \
             --output text)
-          echo "::add-mask::$PRIVATE_KEY"
+          # Mask every line: ::add-mask:: only covers single-line values (CORE-212)
+          while IFS= read -r line; do
+            if [ -n "$line" ]; then echo "::add-mask::${line}"; fi
+          done <<< "$PRIVATE_KEY"
           echo "app_id=$APP_ID" >> $GITHUB_OUTPUT
-          echo "RELEASE_APP_PRIVATE_KEY<<EOF" >> $GITHUB_ENV
-          echo "$PRIVATE_KEY" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          {
+            echo "private_key<<__RELEASE_BOT_KEY_EOF__"
+            echo "$PRIVATE_KEY"
+            echo "__RELEASE_BOT_KEY_EOF__"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Generate GitHub App token
         id: app-token
         uses: actions/create-github-app-token@v1
         with:
           app-id: ${{ steps.ssm.outputs.app_id }}
-          private-key: ${{ env.RELEASE_APP_PRIVATE_KEY }}
+          private-key: ${{ steps.ssm.outputs.private_key }}
 
       - uses: googleapis/release-please-action@v5
         id: release
