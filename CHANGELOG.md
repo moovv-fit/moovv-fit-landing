@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0](https://github.com/moovv-fit/moovv-fit-landing/compare/v1.3.0...v1.4.0) (2026-11-13)
+
+
+### Features
+
+* **assets:** add logo variants (dark/light, SVG/PNG) ([cd1dd29](https://github.com/moovv-fit/moovv-fit-landing/commit/cd1dd29edc116c284cc1d27f4606ee2ba56ec84c))
+* **CORE-149:** add KIRO_SPOT=1 env check to non-spot hooks ([b73db9d](https://github.com/moovv-fit/moovv-fit-landing/commit/b73db9d505a8c625f212bc2850bfc299e83219cb))
+* **hero:** update copy for freemium model ([#2](https://github.com/moovv-fit/moovv-fit-landing/issues/2)) ([ef27eca](https://github.com/moovv-fit/moovv-fit-landing/commit/ef27ecaa742f9b7fea61ead6dad1d48a692943b8))
+
+
+### Bug Fixes
+
+* **ci:** add S3 sync exclude patterns for dev/workspace files (CORE-153) ([#5](https://github.com/moovv-fit/moovv-fit-landing/issues/5)) ([6d492c6](https://github.com/moovv-fit/moovv-fit-landing/commit/6d492c6844588ac5f515959373b4d1435f7335ec))
+* **ci:** mask multi-line release-bot key and stop exporting it via GITHUB_ENV (CORE-212) ([#8](https://github.com/moovv-fit/moovv-fit-landing/issues/8)) ([196aca4](https://github.com/moovv-fit/moovv-fit-landing/commit/196aca47d304ff73cb0aa2d4088fd8e101642fa0))
+* **ci:** remove id-token permission from release-please ([8d5e820](https://github.com/moovv-fit/moovv-fit-landing/commit/8d5e820e3a3bb9775be6e6320927c58c64751c47))
+* **ci:** restore id-token permission for deploy workflow ([909faec](https://github.com/moovv-fit/moovv-fit-landing/commit/909faecd616386f21adc99aef979e8e21920d54e))
+* **ci:** use GitHub App via SSM for release-please ([144b363](https://github.com/moovv-fit/moovv-fit-landing/commit/144b363cf93514cb06b3db385ec9659aaf8f7dd9))
+* **ci:** use PAT for release-please to fix permissions ([dbe19e5](https://github.com/moovv-fit/moovv-fit-landing/commit/dbe19e55afec2a3730fd901cb5fa2a0676d7973c))
+* **CORE-149:** restore agent-type hooks for proper prompt injection ([18b7119](https://github.com/moovv-fit/moovv-fit-landing/commit/18b7119acd9aee6c3e4ca73b0570d6c6e5cb0959))
+* **deploy:** exclude dev files from HTML sync pass [CORE-153] ([fad723f](https://github.com/moovv-fit/moovv-fit-landing/commit/fad723fc7b22a3a017983d49b5392073195be874))
+* **deploy:** exclude nested tools/ and README files from S3 sync [CORE-153] ([4ba1382](https://github.com/moovv-fit/moovv-fit-landing/commit/4ba138225c2e674bc36a62c223a646e43a57e03e))
+* update legacy physio.moovv.fit URLs to app.moovv.fit/physio ([e76164d](https://github.com/moovv-fit/moovv-fit-landing/commit/e76164d46b5498541934b6e3853e4af32c44709c))
+
 ## [1.3.0](https://github.com/moovv-fit/moovv-fit-landing/compare/v1.2.0...v1.3.0) (2026-11-03)
 
 
