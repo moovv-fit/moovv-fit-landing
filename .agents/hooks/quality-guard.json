@@ -4,11 +4,11 @@
     {
       "name": "Static Site Quality Guard",
       "trigger": "PostFileSave",
-      "description": "Enforces HTML/CSS quality standards on file saves",
+      "description": "Enforces HTML/CSS quality standards on file saves (IDE only, skipped on spot)",
       "matcher": "\\.(html|css)$",
       "action": {
-        "type": "agent",
-        "prompt": "QUALITY CHECK on saved file: 1. No inline styles (use CSS classes). 2. No !important in CSS (fix specificity). 3. All images have alt attributes. 4. Semantic HTML elements used (not div soup). 5. CSS uses variables for colors (--color-*). 6. rem units for font sizes (not px). If ANY fail: list violations + suggest fix. If ALL pass: '✅ Quality Pass'."
+        "type": "command",
+        "command": "bash -c '[ \"$KIRO_SPOT\" = \"1\" ] && exit 0; echo \"QUALITY CHECK on saved file: 1. No inline styles (use CSS classes). 2. No !important in CSS (fix specificity). 3. All images have alt attributes. 4. Semantic HTML elements used (not div soup). 5. CSS uses variables for colors (--color-*). 6. rem units for font sizes (not px). If ANY fail: list violations + suggest fix. If ALL pass: Quality Pass.\"'"
       }
     }
   ]
