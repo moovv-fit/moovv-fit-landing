@@ -66,6 +66,23 @@ When running as **kiro-spot** (non-interactive, ephemeral):
 - No build step needed (static HTML/CSS)
 - Do NOT ask "Commit? (y/n)" - executor auto-commits
 
+## 🌿 Worktree & Commit Conventions
+All feature work MUST use worktrees. Direct work on `main` is blocked by `.husky/pre-push` hook.
+
+**Master Steering References:**
+- `worktree-workflow.md` — Worktree creation, manifest tracking, cleanup
+- `commit-conventions.md` — Commit format: `type(LINEAR-ISSUE): description`
+- `cli-tools.md` — AWS SSO (`moovv-fit-ujwal-admin`), Linear CLI, gh CLI
+
+**Quick Commands:**
+```bash
+# Create worktree for feature
+git worktree add .worktrees/feat-CORE-123-feature-name -b feat/CORE-123-feature-name
+
+# Commit with Linear issue
+git commit -m "feat(CORE-123): add feature description"
+```
+
 ## 🔗 References
 - `#[[file:docs/architecture/adr/README.md]]` — Architecture Decision Records (ADRs)
 - `#[[file:/mnt/workspace/src/moovv-fit/repos/docs/product/docs/product/manifest.md]]` — Upstream product decisions (PDRs) & clinical invariants
