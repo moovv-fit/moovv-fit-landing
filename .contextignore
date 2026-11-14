@@ -1,0 +1,13 @@
+images/
+for-*/images/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.webp
+*.log
+.git/
+.kiro/sessions/
+.agents/sessions/
+.agents/rules/
+.kiro/

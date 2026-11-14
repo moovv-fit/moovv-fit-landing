@@ -1,5 +1,6 @@
 ---
-inclusion: auto
+inclusion: fileMatch
+fileMatchPattern: "**/*.css"
 name: CSS Patterns
 description: "CSS conventions: variables, responsive design, naming, layout patterns."
 ---
