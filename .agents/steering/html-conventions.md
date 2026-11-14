@@ -1,5 +1,6 @@
 ---
-inclusion: auto
+inclusion: fileMatch
+fileMatchPattern: "**/*.html"
 name: HTML Conventions
 description: "HTML structure: semantic elements, accessibility, page templates."
 ---

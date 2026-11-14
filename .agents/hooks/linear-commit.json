@@ -8,7 +8,7 @@
       "matcher": "execute_bash",
       "action": {
         "type": "command",
-        "command": "bash -c '[ \"$KIRO_SPOT\" = \"1\" ] && exit 0; echo \"LINEAR COMMIT CHECK: If this is a git commit command, ensure the commit message or branch name includes a Linear issue reference (CORE-XXX). Check the repo TODO.md or Linear board for relevant issues. If no issue applies, the commit can proceed without a reference.\"'"
+        "command": "bash -c '[ \"$KIRO_SPOT\" = \"1\" ] && exit 0; read -t 1 INPUT 2>/dev/null; CMD=$(echo \"$INPUT\" | jq -r \".tool_input.command\" 2>/dev/null); if echo \"$CMD\" | grep -qE \"git\\s+commit\"; then echo \"LINEAR COMMIT CHECK: Ensure commit message or branch references a Linear issue (CORE-XXX).\"; fi; exit 0'"
       }
     }
   ]

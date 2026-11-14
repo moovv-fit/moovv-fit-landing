@@ -1,5 +1,5 @@
 ---
-inclusion: auto
+inclusion: manual
 name: Domain Context
 description: "Moovv business context: audiences, pages, value propositions."
 ---

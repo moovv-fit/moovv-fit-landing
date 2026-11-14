@@ -1,89 +1,39 @@
 # Moovv Fit Landing Pages
 
 ## 🎯 Mission
-Moovv (moovv.fit) — AI-driven healthtech platform for digital MSK and mobility care. Democratizing physical therapy through personalized, accessible MSK solutions.
-
-**Stack:** HTML5 | CSS3 | Vanilla JS | CloudFront | GitHub Actions
+Moovv (moovv.fit) — Marketing, patient lead acquisition, and partner landing pages.
+Stack: HTML5 | CSS3 | Vanilla JS | CloudFront | GitHub Actions
 
 ## 🤖 Behavior (STRICT)
 - **Brevity:** Max 20 words. Status: ✅/🚧/❌/❓
 - **Code-first:** Explain only for design deviations.
 - **Read → Batch edit:** Check patterns first. One edit per file.
-- **No auto-tests.** Only when requested.
+- **No auto-tests:** Only when requested.
 
-## 🚫 Forbidden
-| Pattern | Use Instead |
-|---------|-------------|
-| Inline styles | CSS classes in `css/styles.css` |
-| `!important` | Proper specificity |
-| Fixed px for fonts | `rem` units |
-| Missing `alt` attrs | Descriptive alt text |
-| Hardcoded colors | CSS variables (`--color-*`) |
-| Non-semantic HTML | Semantic elements (`<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`) |
+## 🚫 Forbidden Patterns
+See `#[[file:.agents/steering/system-rules.md]]`. Key prohibitions:
+- NO inline styles (use CSS classes in `css/styles.css`)
+- NO `!important` in CSS (use proper specificity)
+- NO fixed px for font sizes (use `rem`)
+- NO missing `alt` attributes on images
+- NO hardcoded hex colors (use CSS variables `--color-*`)
+- NO non-semantic HTML (use `<header>`, `<nav>`, `<main>`, `<section>`, `<footer>`)
 
-## 📁 Files
-| Type | Path |
-|------|------|
-| Root pages | `*.html` |
-| Physio landing | `for-physios/*.html` |
-| Clinic landing | `for-clinics/*.html` |
-| Styles | `css/styles.css`, `for-*/css/styles.css` |
-| Scripts | `js/main.js`, `for-*/js/main.js` |
-| Images | `images/`, `for-*/images/` |
-
-## 🎨 Design System
-- **Fonts:** Lufga (headings), Noto Sans (body)
-- **Colors:** Use CSS variables defined in `:root`
-- **Spacing:** 8px grid system
-- **Breakpoints:** Mobile-first (768px, 1024px, 1440px)
-
-## 🚀 Deployment
-- **Push to `main`** → GitHub Actions → S3 → CloudFront
-- Auto-deploys in ~30s
-- Cache invalidation automatic
-
-## 🔧 Shared Skills (via .agents/shared/skills/)
-Activate with: `#[[file:.agents/shared/skills/{name}/SKILL.md]]`
-- `moovv-fit-design-system` — Brand colors, typography, components
-- `moovv-fit-product` — Product context and domain knowledge
-
-## 📎 Context
-- `#[[file:.agents/steering/system-rules.md]]` — Constraints
-- `#[[file:.agents/steering/css-patterns.md]]` — CSS conventions
-- `#[[file:.agents/steering/html-conventions.md]]` — HTML structure
-- `#[[file:.agents/steering/operational-context.md]]` — Commands
-
-**Session End:** Ask "Commit? (y/n)" → concise msg → `git add` specific files
-
-## 🤖 Spot Execution Mode
-When running as **kiro-spot** (non-interactive, ephemeral):
-- Skip `.agents/sessions/` folders (ephemeral)
-- Executor handles git commit/push - focus on code only
-- Honor only `-spot.json` hooks:
-  - `quality-guard-spot.json` — HTML/CSS quality checks
-  - `git-safety-spot.json` — Destructive git prevention
-  - `codegen-focus-spot.json` — Session start context
-- No build step needed (static HTML/CSS)
-- Do NOT ask "Commit? (y/n)" - executor auto-commits
+## 📁 Repository Structure
+- `*.html` — Root landing pages
+- `for-physios/*.html` — Physiotherapist portal landing
+- `for-clinics/*.html` — Clinic onboarding landing
+- `css/styles.css` — Core responsive styles
+- `js/main.js` — Lightweight client interaction scripts
 
 ## 🌿 Worktree & Commit Conventions
-All feature work MUST use worktrees. Direct work on `main` is blocked by `.husky/pre-push` hook.
+All feature work MUST use worktrees. Direct work on `main` is blocked by `.husky/pre-push`.
+- Create: `git worktree add .worktrees/feat-CORE-123-feature -b feat/CORE-123-feature`
+- Commit format: `type(LINEAR-ISSUE): description`
 
-**Master Steering References:**
-- `worktree-workflow.md` — Worktree creation, manifest tracking, cleanup
-- `commit-conventions.md` — Commit format: `type(LINEAR-ISSUE): description`
-- `cli-tools.md` — AWS SSO (`moovv-fit-ujwal-admin`), Linear CLI, gh CLI
-
-**Quick Commands:**
-```bash
-# Create worktree for feature
-git worktree add .worktrees/feat-CORE-123-feature-name -b feat/CORE-123-feature-name
-
-# Commit with Linear issue
-git commit -m "feat(CORE-123): add feature description"
-```
-
-## 🔗 References
-- `#[[file:docs/architecture/adr/README.md]]` — Architecture Decision Records (ADRs)
-- `#[[file:/mnt/workspace/src/moovv-fit/repos/docs/product/docs/product/manifest.md]]` — Upstream product decisions (PDRs) & clinical invariants
-- `#[[file:/mnt/workspace/src/moovv-fit/docs/architecture/adr/ADR-001-SUBMODULE-ARCHITECTURE.md]]` — Platform submodule architecture
+## 📎 Deep Context (on-demand)
+- `#[[file:.agents/steering/system-rules.md]]` — Constraints & HTML/CSS standards
+- `#[[file:.agents/steering/html-conventions.md]]` — HTML templates & accessibility
+- `#[[file:.agents/steering/css-patterns.md]]` — CSS variables, grid, and breakpoints
+- `#[[file:.agents/steering/operational-context.md]]` — Deployment & local preview
+- `#[[file:docs/architecture/adr/README.md]]` — Architecture Decision Records

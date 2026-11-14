@@ -1,5 +1,5 @@
 ---
-inclusion: auto
+inclusion: manual
 name: Operational Context
 description: "Commands, deployment, local development workflow."
 ---

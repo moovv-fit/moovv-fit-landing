@@ -7,8 +7,8 @@
       "description": "Prevent destructive git operations in spot sessions",
       "matcher": "execute_bash",
       "action": {
-        "type": "agent",
-        "prompt": "SPOT GIT SAFETY: If this is a git command with --force, --hard, -D, or clean -fd, STOP. Spot should not run destructive git operations."
+        "type": "command",
+        "command": "bash -c 'read -t 1 INPUT 2>/dev/null; CMD=$(echo \"$INPUT\" | jq -r \".tool_input.command\" 2>/dev/null); if echo \"$CMD\" | grep -qE \"(git\\s+push\\s+--force|git\\s+reset\\s+--hard)\"; then echo \"❌ Destructive git command blocked in spot mode\" >&2; exit 1; fi; exit 0'"
       }
     }
   ]
